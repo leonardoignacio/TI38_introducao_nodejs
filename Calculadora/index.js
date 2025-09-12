@@ -1,0 +1,6 @@
+const calc = require('./calculadora.js')
+console.log("Soma: ", calc.soma(20,30))
+console.log("Subtração:", calc.sub(25,5))
+console.log("Multiplicação: ",calc.mult(8,7))
+console.log("Divisão:", calc.div(100,4))
+console.log("Divisão:", calc.div(35,0))
