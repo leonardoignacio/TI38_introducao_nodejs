@@ -12,7 +12,8 @@ app.use(express.json())
 app.get('/', (req, res)=>res.sendFile(`${BASEDIR}/index.html`))
 app.get('/cadastrar', (req, res)=>res.sendFile(`${BASEDIR}/cadastrar.html`))
 
-//Inserir registro Aluno
+//CRUD
+//C - Inserir registro Aluno
 app.post('/cadastrar', (req, res)=>{
     let dados = req.body
     dados = [dados.nome, parseFloat(dados.nota1), parseFloat(dados.nota2), parseFloat(dados.nota3), parseFloat(dados.nota4)]
@@ -20,14 +21,24 @@ app.post('/cadastrar', (req, res)=>{
                 INSERT INTO alunos (nome, nota1, nota2, nota3, nota4)
                 VALUES (?, ?, ?, ?, ?);
     `
-    con.query(sql, dados, (erro, resp)=>{
+    con.query(sql, dados, (err, resp)=>{
         let resposta
-        if(erro) resposta = {...erro, status:400, message: `Os dados não foram gravados`}
-        else resposta = {...resp, status:201}
+        if(err) resposta = {...err, status:400, message: `Os dados não foram gravados`}
+        else resposta = {...resp, status:201, message:`Gravado com sucesso! - ${resp.affectedRows} linha(s) afetada(s)`}
         res.json(resposta)
     })
 })
 
+//R - Leitura de dados
+app.get('/alunos', (req, res)=>{
+    let sql = `SELECT* FROM alunos;`
+    con.query(sql, (err, resp)=>{
+        let resposta
+        if (err) resposta = {...err, status:400}
+        else resposta = {...resp, status:200}
+        res.json(resposta)
+    })
+})
 
 app.use((req, res)=>res.sendFile(`${BASEDIR}/404.html`))
 
