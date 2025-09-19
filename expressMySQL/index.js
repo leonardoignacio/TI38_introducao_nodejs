@@ -39,7 +39,6 @@ app.get('/alunos', (req, res)=>{
         res.json(resposta)
     })
 })
-
 // U - Atualização
 app.patch('/alunos/:id', (req, res)=>{
     let dados = req.body
@@ -55,7 +54,6 @@ app.patch('/alunos/:id', (req, res)=>{
         res.json(resposta)
     })
 })
-
 // D - Excluir registros
 app.delete('/alunos/:id', (req, res)=>{
     let id = parseInt(req.params.id)
