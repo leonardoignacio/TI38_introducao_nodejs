@@ -13,3 +13,11 @@ CREATE TABLE alunos (
     nota3 DECIMAL(5,2),
     nota4 DECIMAL(5,2)
 );
+
+-- Criação da tabela disciplinas
+USE express_ti38;
+CREATE TABLE disciplinas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    professor VARCHAR(100) NOT NULL   
+);

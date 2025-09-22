@@ -10,11 +10,13 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 
 app.get('/', (req, res)=>res.sendFile(`${BASEDIR}/index.html`))
-app.get('/cadastrar', (req, res)=>res.sendFile(`${BASEDIR}/cadastrar.html`))
+app.get('/cadastrar-alunos', (req, res)=>res.sendFile(`${BASEDIR}/cadastrar_alunos.html`))
+app.get('/cadastrar-disciplinas', (req, res)=>res.sendFile(`${BASEDIR}/cadastrar_disciplinas.html`))
 
 //CRUD
-//C - Inserir registro Aluno
-app.post('/cadastrar', (req, res)=>{
+//C - Inserir registros
+//Tabela alunos
+app.post('/alunos', (req, res)=>{
     let dados = req.body
     dados = [dados.nome, parseFloat(dados.nota1), parseFloat(dados.nota2), parseFloat(dados.nota3), parseFloat(dados.nota4)]
     let sql = `
@@ -28,10 +30,26 @@ app.post('/cadastrar', (req, res)=>{
         res.json(resposta)
     })
 })
+// Tabela disciplinas
+app.post('/disciplinas', (req, res)=>{
+    let dados = req.body
+    dados = [dados.nome, dados.professor]
+    let sql = `
+                INSERT INTO disciplinas (nome, professor)
+                VALUES (?, ?);
+    `
+    con.query(sql, dados, (err, resp)=>{
+        let resposta
+        if(err) resposta = {...err, status:400, message: `Os dados não foram gravados`}
+        else resposta = {...resp, status:201, message:`Gravado com sucesso! - ${resp.affectedRows} linha(s) afetada(s)`}
+        res.json(resposta)
+    })
+})
 
 //R - Leitura de dados
+// Tabela alunos
 app.get('/alunos', (req, res)=>{
-    let sql = `SELECT* FROM alunos;`
+    let sql = `SELECT * FROM alunos;`
     con.query(sql, (err, resp)=>{
         let resposta
         if (err) resposta = {...err, status:400}
@@ -39,6 +57,17 @@ app.get('/alunos', (req, res)=>{
         res.json(resposta)
     })
 })
+//Tabela disciplinas
+app.get('/disciplinas', (req, res)=>{
+    let sql = `SELECT * FROM disciplinas;`
+    con.query(sql, (err, resp)=>{
+        let resposta
+        if (err) resposta = {...err, status:400}
+        else resposta = {...resp, status:200}
+        res.json(resposta)
+    })
+})
+
 // U - Atualização
 app.patch('/alunos/:id', (req, res)=>{
     let dados = req.body
