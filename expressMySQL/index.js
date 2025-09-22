@@ -69,6 +69,7 @@ app.get('/disciplinas', (req, res)=>{
 })
 
 // U - Atualização
+// Tabela alunos
 app.patch('/alunos/:id', (req, res)=>{
     let dados = req.body
     dados = [dados.nome, parseFloat(dados.nota1), parseFloat(dados.nota2), parseFloat(dados.nota3), parseFloat(dados.nota4)]
@@ -83,10 +84,25 @@ app.patch('/alunos/:id', (req, res)=>{
         res.json(resposta)
     })
 })
-// D - Excluir registros
-app.delete('/alunos/:id', (req, res)=>{
+//Tabela disciplinas
+app.patch('/disciplinas/:id', (req, res)=>{
+    let dados = req.body
+    dados = [dados.nome, dados.professor]
     let id = parseInt(req.params.id)
-    let sql = `DELETE FROM alunos WHERE id=${id};`
+    let sql = `UPDATE alunos 
+    SET nome=?, professor=? 
+    WHERE id=${id};`
+    con.query(sql, dados, (err, resp)=>{
+        let resposta
+        if (err) resposta = {...err, status:400, message:'Falha na atualização!'}
+        else resposta = {...resp, status:200, message:`Registro atualizado com sucesso!`}
+        res.json(resposta)
+    })
+})
+// D - Excluir registros
+app.delete('/disciplinas/:id', (req, res)=>{
+    let id = parseInt(req.params.id)
+    let sql = `DELETE FROM disciplinas WHERE id=${id};`
     con.query(sql,(err, resp)=>{
         let resposta
         if (err) respota = {...err, status:400, message:'Erro na exclusão de dados.'}
