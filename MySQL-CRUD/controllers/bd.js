@@ -1,16 +1,14 @@
-
-/*require('dotenv').config()
+require('dotenv').config()
 const BD_HOST=process.env.BD_HOST
 const BD_USER=process.env.BD_USER
 const BD_PASSWORD=process.env.BD_PASSWORD
 const BD_DATABASE = process.env.BD_DATABASE
-console.log(process.env.BD_HOST)*/
 
 const chaveAcesso = {
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'express_ti38'
+    host: BD_HOST,
+    user: BD_USER,
+    password: BD_PASSWORD,
+    database: BD_DATABASE
 }
 //Função de conexão
 const conectar = async () => {

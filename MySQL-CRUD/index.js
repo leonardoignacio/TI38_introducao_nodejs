@@ -1,5 +1,6 @@
 const express = require("express")
 const bd = require('./controllers/bd.js')
+require('dotenv').config()
 const cors = require("cors")
 let app = express()
 const PORT = 3200
