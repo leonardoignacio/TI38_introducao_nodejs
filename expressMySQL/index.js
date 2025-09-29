@@ -74,7 +74,7 @@ app.patch('/alunos/:id', (req, res)=>{
     let dados = req.body
     dados = [dados.nome, parseFloat(dados.nota1), parseFloat(dados.nota2), parseFloat(dados.nota3), parseFloat(dados.nota4)]
     let id = parseInt(req.params.id)
-    let sql = `UPDATE express_ti38.alunos 
+    let sql = `UPDATE alunos 
     SET nome=?, nota1=?, nota2=?, nota3=?, nota4=? 
     WHERE id=${id};`
     con.query(sql, dados, (err, resp)=>{

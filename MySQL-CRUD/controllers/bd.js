@@ -51,9 +51,10 @@ module.exports = {
         //Obter campos do bd
         campos = campos.map((el)=>el.Field) // Cria array com campos
         campos.shift() //Exclui a primeira posição ID
+        // ['nome','professor']
         let argumentos = ''
-        campos.forEach(el =>argumentos+=',?') // Cria str de ,?,?,?,?
-        argumentos = argumentos.slice(1) //corta a , do inicio
+        campos.forEach(el =>argumentos+=',?') // Cria str de ,?,?
+        argumentos = argumentos.slice(1) //corta a ',' do inicio
         campos = campos.toString()
         const sql = `INSERT INTO ${tabela} (${campos}) VALUES (${argumentos});`
         //Salvar dados
@@ -63,14 +64,16 @@ module.exports = {
         let sql = `SELECT * FROM ${tabela}`
         sql = id==''? sql: sql+` WHERE id=${id}` 
         let linhas = await executarQuery(sql)
-        linhas.dados = linhas.dados.length==0? linhas.dados=[{message:'Nenhum registro encontrato'}]:linhas.dados
+        linhas.dados = linhas.dados.length==0?[{message:'Nenhum registro encontrato'}]:linhas.dados
         return await linhas
     },
     atualizar: async (tabela, dados, id)=>{
         let campos = await obterCampos(tabela)
         campos.shift()
+        //['nome', 'nota1', 'nota2', 'nota3', 'nota4']
         campos = campos.map((el)=>el.Field+'=?')
         campos = campos.toString()
+        // 'nome=?,nota1=?, nota2=?, nota3=?, nota4=?'
         let sql= `UPDATE ${tabela} SET ${campos} WHERE id =?`
         dados.push(id)
         return await executarQuery(sql, dados)
